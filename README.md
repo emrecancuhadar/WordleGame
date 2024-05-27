@@ -10,7 +10,7 @@ This project is a simple implementation of the popular game "Wordle". It is buil
                                                 Yellow  : Letter is in the word but in the wrong place.  
                                                 Grey    : Letter is not in the word.
 - Ability to restart the game with a new word.
-
+- Words List: stars, apple, berry, loily, exits, slate, crate, blaze, ghost, flame, stone, light, proud, quilt
 ## How to Run
 To run this project, you will need to have Qt installed on your system.
 1. Clone the repository.
