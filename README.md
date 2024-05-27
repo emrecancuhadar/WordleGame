@@ -5,8 +5,8 @@ This project is a simple implementation of the popular game "Wordle". It is buil
 
 ## Features
 - Enter guesses for a 5-letter word.
-- Receive color-coded feedback for each guess. (Green   : Letter is in the word and in the correct place.
-                                                Yellow  : Letter is in the word but in the wrong place.
+- Receive color-coded feedback for each guess. (Green   : Letter is in the word and in the correct place.   
+                                                Yellow  : Letter is in the word but in the wrong place.  
                                                 Grey    : Letter is not in the word.
 - Ability to restart the game with a new word.
 
