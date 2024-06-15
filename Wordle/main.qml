@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.5
+import QtQuick 2.14
+import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.3
 
 ApplicationWindow {
@@ -30,9 +30,11 @@ ApplicationWindow {
                     }
                 }
                 onAccepted: {
-                    if (text.length === 5 && validWords.indexOf(text) !== -1 && currentRowIndex < 6) {
-                        wordleLogic.evaluateGuess(text);
-                        text = ""; // Clear the input field after submitting
+                    if (!gameOver) {
+                        if (text.length === 5) {
+                            wordleLogic.evaluateGuess(text);
+                            text = ""; // Clear the input field after submitting
+                        }
                     }
                 }
             }
@@ -60,14 +62,14 @@ ApplicationWindow {
                 }
             }
 
-            Button {
-                text: "Submit"
-                onClicked: {
-                    if (wordInput.text.length === 5 && validWords.indexOf(wordInput.text) !== -1 && currentRowIndex < 6) {
-                        wordleLogic.evaluateGuess(wordInput.text);
-                        wordInput.text = ""; // Clear the input field after submitting
-                    }
-                }
+            Text {
+                id: statusMessage
+                width: parent.width * 0.8
+                height: 40
+                font.pixelSize: 20
+                color: "red"
+                horizontalAlignment: Text.AlignHCenter
+                text: ""
             }
 
             Button {
@@ -82,15 +84,16 @@ ApplicationWindow {
                         }
                     }
                     currentRowIndex = 0;
-
+                    gameOver = false;
+                    statusMessage.text = "";
                 }
             }
-
         }
     }
 
     property int currentRowIndex: 0 // Explicitly track the current row for guesses
     property var validWords: ["stars", "apple", "berry", "loily", "exits", "slate", "crate", "blaze", "ghost", "flame", "stone", "light", "proud", "quilt"] // List of valid words
+    property bool gameOver: false // Track game over state
 
     Connections {
         target: wordleLogic
@@ -104,6 +107,29 @@ ApplicationWindow {
                 }
                 currentRowIndex++;
             }
+        }
+        onGameWon: {
+            gameOver = true;
+            statusMessage.text = "Congratulations! You've found the word!";
+        }
+        onGameLost: {
+            gameOver = true;
+            statusMessage.text = "Game Over! You've reached the maximum attempts.";
+        }
+        onInvalidWordEntered: {
+            statusMessage.text = "The entered word is not in the list.";
+            invalidWordTimer.start();
+        }
+        onClearInvalidWordWarning: {
+            statusMessage.text = "";
+        }
+    }
+
+    Timer {
+        id: invalidWordTimer
+        interval: 2000 // 2 seconds
+        onTriggered: {
+            statusMessage.text = "";
         }
     }
 }
